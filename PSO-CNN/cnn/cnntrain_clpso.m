@@ -35,10 +35,10 @@ for i = 1 : opts.numepochs
 end
 %画出最优适应度的变化过程，即收敛过程
 % disp(['本次实验共迭代',num2str(opts.numepochs),'次，其中PSO占' ,num2str(PSO_count), '次，SGD占' ,num2str(SGD_count), '次。'])
-figure('Name','第四十六次实验');
+figure('Name','第四十九次实验');
 plot(result);
 title('适应度曲线');
 xlabel('计算适应度次数');ylabel('适应度');
 
-save fitnessgbest_each_iteration46 result;
+save fitnessgbest_each_iteration49 result;
 end

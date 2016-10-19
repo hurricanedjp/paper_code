@@ -3,6 +3,11 @@ addpath('C:\Users\Administrator\Desktop\dingjianping\PSO-CNN\data');
 addpath('C:\Users\Administrator\Desktop\dingjianping\PSO-CNN\util');
 load data512newb48;
 
+% %归一化
+% train_x=mapminmax(double(resshap(train_x)));
+% test_x=mapminmax(double(test_x(:)'));
+
+
 train_x = double(reshape(train_x',48,48,596))/255;
 test_x = double(reshape(test_x',48,48,501))/255;
 train_y = double(train_y');
@@ -29,7 +34,13 @@ opts.w0=0.9;
 opts.w1=0.4;
 opts.c=1.49445;
 opts.sizepar=30;%sizepar为粒子群的数量
-opts.m=3; % refreshing map 设为7，参见clpso论文 E Adjusting the Refreshing gap m
+opts.m=7; % refreshing map 设为7，参见clpso论文 E Adjusting the Refreshing gap m
+%设定边界值
+opts.velmax=0.3;
+opts.velmin=-0.3; %见pso综述，速度按经验一般取解空间的10%到20%
+opts.parmax=1.5;  %见第40次实验，所有结果都在-1.5到1.5内
+opts.parmin=-1.5;
+
 cnn.Pc=zeros(1,opts.sizepar); %更新时使用的pc（i）
 cnn.flag=zeros(1,opts.sizepar); %对于每一个粒子的判断flag，存在cnn的结构中能够保存下来
 
@@ -40,7 +51,7 @@ opts.alpha = 1;
 opts.batchsize = 4; 
 
 %循环迭代次数
-opts.numepochs = 300;
+opts.numepochs = 100;
 
 
 cnn.par=cell(1,opts.sizepar+1);
@@ -59,7 +70,7 @@ cnn = cnntrain_clpso(cnn, train_x, train_y, opts );
    % caoi=[caoi;cao,zeros(1,i-5)];
 
 %save i200error0320 caoi;
-save PSOCNN_48_46 cnn opts;
+save PSOCNN_48_49 cnn opts;
 
 %show test error
 disp([num2str(er*100) '% error']);
