@@ -65,17 +65,17 @@ function net = cnnbp(net,opts,y)
                 end
 				% db 保存的是 误差对于bias基 的导数
                 net.layers{l}.db{j} = sum(net.layers{l}.d{j}(:)) / size(net.layers{l}.d{j}, 3);
-                net.gd=[net.gd,net.layers{l}.db{j}];
+                gd=[gd,net.layers{l}.db{j}];
             end
         end
     end
 	% 最后一层perceptron的gradient的计算
     net.dffW = net.od * (net.fv)' / size(net.od, 2);
-    net.gd=[net.gd,reshape(net.dffW,1,[])];
+    gd=[gd,reshape(net.dffW,1,[])];
     net.dffb = mean(net.od, 2);
-    net.gd=[net.gd,reshape(net.dffb,1,[])];
+    gd=[gd,reshape(net.dffb,1,[])];
     
-    net.sumgd=net.sumgd-opts.alpha * net.gd;
+    net.sumgd=net.sumgd-opts.alpha * gd;
 
     function X = rot180(X)
         X = flipdim(flipdim(X, 1), 2);

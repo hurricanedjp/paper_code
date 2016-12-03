@@ -91,13 +91,13 @@ function net = cnnsetup(net,x, y,opts)
     net.ff_b=reshape(net.ffb,1,[]);
     net.par{num}=[net.par{num},net.ff_b];
     %每次初始化完粒子的位置，使用相同的维数初始化速度，循环初始化,并初始化最优个体极值
-    net.vel{num}=2*rands(1,numel(net.par{num}));
+    net.vel{num}=1/3*rands(1,numel(net.par{num}));
     net.pbestpar{num}=rands(1,numel(net.par{num}));
     end
     %初始化群体最优极值
     net.gbestpar=rands(1,numel(net.par{num}));
-    
-    net.fitnessgbest=rand;          %初始全局最优适应度（global_bestfitness）
-    %net.fitnesspbest=repmat(5,1,opts.sizepar);    %初始化个体最优适应度（personal_bestfitness）
-    net.fitnesspbest=rand(1,opts.sizepar);    %初始化个体最优适应度（personal_bestfitness）
+    net.par{opts.sizepar+1}=net.gbestpar;
+    net.fitnessgbest=3;          %初始全局最优适应度（global_bestfitness）
+%     net.fitnesspbest=repmat(5,1,opts.sizepar);    %初始化个体最优适应度（personal_bestfitness）
+    net.fitnesspbest=rand(1,opts.sizepar)+2;    %初始化个体最优适应度（personal_bestfitness）
 end
